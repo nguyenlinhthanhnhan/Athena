@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Athena.Application.Categories.Queries.GetCategories;
 
-public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, CategoriesVm>
+public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, CategoriesVm?>
 {
     private readonly AthenaDbContext _context;
     private readonly IMapper _mapper;
@@ -20,14 +20,18 @@ public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, Cat
         _mapper = mapper;
     }
 
-    public async Task<CategoriesVm> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
+    public async Task<CategoriesVm?> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var categories = await _context.Categories
-            .ProjectTo<ViewCategoryDto>(_mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
+        var vm = new CategoriesVm
+        {
+            Lists = await _context.Categories
+                .ProjectTo<ViewCategoryDto>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken)
+        };
+        
+        var serializedCategories = JsonConvert.SerializeObject(vm);
+        vm = JsonConvert.DeserializeObject<CategoriesVm>(serializedCategories);
 
-        var serializedCategories = JsonConvert.SerializeObject(categories);
-        return JsonConvert.DeserializeObject<CategoriesVm>(serializedCategories) ??
-               throw new ResourceNotFoundException();
+        return vm;
     }
 }
