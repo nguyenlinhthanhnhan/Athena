@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Athena.DataAccess.Persistence.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AthenaDbContext))]
     [Migration("20230511100722_Initial")]
     partial class Initial
     {

@@ -7,17 +7,17 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Athena.DataAccess.Persistence;
 
-public class ApplicationDbContext : DbContext
+public class AthenaDbContext : DbContext
 {
     private readonly IDateTime _dateTime;
     private IDbContextTransaction? _currentTransaction;
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public AthenaDbContext(DbContextOptions<AthenaDbContext> options)
         : base(options)
     {
     }
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDateTime dateTime) : base(options)
+    public AthenaDbContext(DbContextOptions<AthenaDbContext> options, IDateTime dateTime) : base(options)
     {
         _dateTime = dateTime;
     }
@@ -38,8 +38,7 @@ public class ApplicationDbContext : DbContext
         try
         {
             await SaveChangesAsync().ConfigureAwait(false);
-
-            _currentTransaction?.Commit();
+            await _currentTransaction?.CommitAsync();
         }
         catch
         {

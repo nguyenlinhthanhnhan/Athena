@@ -1,4 +1,6 @@
 ﻿using Athena.DataAccess.Persistence;
+using Athena.Shared.Common;
+using Athena.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,10 +11,12 @@ public static class DataAccessDependencyInjection
 {
     public static IServiceCollection AddInfrastructureData(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection.AddDbContext<ApplicationDbContext>(options =>
+        serviceCollection.AddDbContext<AthenaDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("PostgresqlConnection"));
         });
+
+        serviceCollection.AddTransient<IDateTime, DateTimeService>();
         
         return serviceCollection;
     }
