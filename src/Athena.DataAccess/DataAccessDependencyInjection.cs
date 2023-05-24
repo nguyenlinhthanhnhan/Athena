@@ -1,6 +1,4 @@
 ﻿using Athena.DataAccess.Persistence;
-using Athena.DataAccess.Repositories;
-using Athena.DataAccess.Repositories.Impl;
 using Athena.Shared.Common;
 using Athena.Shared.Services;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +18,6 @@ public static class DataAccessDependencyInjection
         });
 
         serviceCollection.AddTransient<IDateTime, DateTimeService>();
-        serviceCollection.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 
         return serviceCollection;
     }
