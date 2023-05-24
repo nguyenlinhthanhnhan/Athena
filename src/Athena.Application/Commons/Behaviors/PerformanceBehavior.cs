@@ -26,7 +26,7 @@ public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
         if (elapsedMilliseconds <= 500) return response;
 
         var requestName = typeof(TRequest).Name;
-        _logger.LogWarning("Travel Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}",
+        _logger.LogWarning("Athena Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}",
             requestName, elapsedMilliseconds, request);
         return response;
     }
