@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using Athena.Application.Commons.Behaviors;
 using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +18,11 @@ public static class ApplicationDependencyInjection
         {
             configs.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
         });
+
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
+
 
         return serviceCollection;
     }
