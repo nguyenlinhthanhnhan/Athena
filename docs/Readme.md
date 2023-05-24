@@ -6,25 +6,25 @@
 
 
 ```csharp
-dotnet ef migrations add Migration-Name --project Athena.DataAccess -o Persistence/Migrations --startup-project Athena.Web.BlogCMS
+dotnet ef migrations add Migration-Name --project Athena.DataAccess -o Persistence/Migrations --startup-project Athena.API
 ```
 
 ### Update database
 
 ```csharp
-dotnet ef database update --project Athena.DataAccess --startup-project Athena.Web.BlogCMS
+dotnet ef database update --project Athena.DataAccess --startup-project Athena.API
 ```
 
 ### Remove migration
 
 ```csharp
-dotnet ef migrations remove --project Athena.DataAccess --startup-project Athena.Web.BlogCMS
+dotnet ef migrations remove --project Athena.DataAccess --startup-project Athena.API
 ```
 
 ### Remove database
 
 ```csharp
-dotnet ef database drop --project Athena.DataAccess --startup-project Athena.Web.BlogCMS
+dotnet ef database drop --project Athena.DataAccess --startup-project Athena.API
 ```
 
 ## Run
@@ -32,7 +32,7 @@ dotnet ef database drop --project Athena.DataAccess --startup-project Athena.Web
 ### Run API
 
 ```csharp
-dotnet run --project Athena.Web.BlogCMS
+dotnet run --project Athena.API
 ```
 
 ### Run Tests
@@ -46,5 +46,5 @@ dotnet test
 ### Build API
 
 ```csharp
-dotnet build --project Athena.Web.BlogCMS
+dotnet build --project Athena.API
 ```
