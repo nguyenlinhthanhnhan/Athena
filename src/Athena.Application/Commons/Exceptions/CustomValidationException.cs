@@ -1,17 +1,18 @@
-﻿using FluentValidation.Results;
+﻿using System.Runtime.Serialization;
+using FluentValidation.Results;
 
 namespace Athena.Application.Commons.Exceptions;
 
 [Serializable]
-public class ValidationException:Exception
+public class CustomValidationException : Exception
 {
-    public ValidationException()
+    public CustomValidationException()
         : base("One or more validation failures have occurred.")
     {
         Errors = new Dictionary<string, string[]>();
     }
 
-    public ValidationException(IEnumerable<ValidationFailure> failures)
+    public CustomValidationException(IEnumerable<ValidationFailure> failures)
         : this()
     {
         var failureGroups = failures.GroupBy(e => e.PropertyName, e => e.ErrorMessage);
@@ -26,4 +27,9 @@ public class ValidationException:Exception
     }
 
     public IDictionary<string, string[]> Errors { get; }
+
+    protected CustomValidationException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+        Errors = new Dictionary<string, string[]>();
+    }
 }

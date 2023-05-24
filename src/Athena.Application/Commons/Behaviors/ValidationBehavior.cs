@@ -1,5 +1,7 @@
-﻿using FluentValidation;
+﻿using Athena.Application.Commons.Exceptions;
+using FluentValidation;
 using MediatR;
+
 
 namespace Athena.Application.Commons.Behaviors;
 
@@ -21,7 +23,7 @@ public class ValidationBehavior<TRequest, TResponse>:IPipelineBehavior<TRequest,
         var failures = validationResults.SelectMany(r => r.Errors).Where(f => f != null).ToList();
 
         if (failures.Count != 0)
-            throw new ValidationException(failures);
+            throw new CustomValidationException(failures);
 
         return await next();
     }

@@ -1,4 +1,5 @@
-﻿using Athena.Application.Categories.Queries.GetCategories;
+﻿using Athena.Application.Categories.Command.CreateCategory;
+using Athena.Application.Categories.Queries.GetCategories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Athena.API.Controllers.v1;
@@ -11,5 +12,11 @@ public class CategoriesController : ApiController
     {
         var vm = await Mediator.Send(new GetCategoriesQuery());
         return vm.Lists.Count == 0 ? NotFound() : Ok(vm);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<int>> Create(CreateCategoryCommand command)
+    {
+        return await Mediator.Send(command);
     }
 }

@@ -12,7 +12,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
         {
-            { typeof(ValidationException), HandleValidationException },
+            { typeof(CustomValidationException), HandleValidationException },
             { typeof(NotFoundException), HandleNotFoundException },
         };
     }
@@ -51,7 +51,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private void HandleValidationException(ExceptionContext context)
     {
-        var exception = context.Exception as ValidationException;
+        var exception = context.Exception as CustomValidationException;
 
         var details = new ValidationProblemDetails(exception.Errors)
         {
