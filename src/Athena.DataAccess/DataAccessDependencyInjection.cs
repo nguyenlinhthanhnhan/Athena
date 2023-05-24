@@ -1,4 +1,6 @@
 ﻿using Athena.DataAccess.Persistence;
+using Athena.DataAccess.Repositories;
+using Athena.DataAccess.Repositories.Impl;
 using Athena.Shared.Common;
 using Athena.Shared.Services;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +11,8 @@ namespace Athena.DataAccess;
 
 public static class DataAccessDependencyInjection
 {
-    public static IServiceCollection AddInfrastructureData(this IServiceCollection serviceCollection, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureData(this IServiceCollection serviceCollection,
+        IConfiguration configuration)
     {
         serviceCollection.AddDbContext<AthenaDbContext>(options =>
         {
@@ -17,7 +20,8 @@ public static class DataAccessDependencyInjection
         });
 
         serviceCollection.AddTransient<IDateTime, DateTimeService>();
-        
+        serviceCollection.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+
         return serviceCollection;
     }
 }
