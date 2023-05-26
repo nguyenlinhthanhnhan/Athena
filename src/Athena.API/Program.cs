@@ -4,6 +4,7 @@ using Athena.API.Filters;
 using Athena.API.Helpers;
 using Athena.Application;
 using Athena.DataAccess;
+using Athena.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
@@ -11,6 +12,8 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Swashbuckle.AspNetCore.SwaggerGen;
+
+const string defaultCorsPolicyName = "localhost";
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -32,6 +35,23 @@ builder.Services.AddApiVersioningExtension();
 builder.Services.AddVersionedApiExplorerExtension();
 builder.Services.AddSwaggerGenExtension();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+
+builder.Services.AddCors(
+    options => options.AddPolicy(
+        defaultCorsPolicyName,
+        cp => cp
+            .WithOrigins(
+                // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
+                configuration["App:CorsOrigins"]!
+                    .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                    .Select(o => o.RemovePostFix("/"))
+                    .ToArray()
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+    )
+);
 
 var app = builder.Build();
 
@@ -61,9 +81,9 @@ Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
     .WriteTo.MongoDBBson(
         databaseUrl: builder.Configuration.GetSection("ConnectionStrings:SerilogConnection").Value!,
         collectionName: "Logs",
-        restrictedToMinimumLevel: LogEventLevel.Error)
+        restrictedToMinimumLevel: LogEventLevel.Warning)
     .WriteTo.Console()
-    .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7,
+    .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day,
         fileSizeLimitBytes: 1048576, rollOnFileSizeLimit: true)
     .CreateLogger();
 try
