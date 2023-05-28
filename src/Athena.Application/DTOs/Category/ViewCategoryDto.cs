@@ -1,8 +1,9 @@
 ﻿using Athena.Application.Commons.Mappings;
+using Athena.Shared.DTOs.Category;
 
 namespace Athena.Application.DTOs.Category;
 
-public class ViewCategoryDto : IMapFrom<Core.Entities.Category>
+public class ViewCategoryDto : IViewCategoryDto, IMapFrom<Core.Entities.Category>
 {
     public int Id { get; set; }
     

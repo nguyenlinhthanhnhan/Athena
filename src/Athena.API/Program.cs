@@ -64,7 +64,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerExtension(provider);
 }
 
-app.UseHttpsRedirection();
+app.UseCors(defaultCorsPolicyName);
 
 app.UseAuthorization();
 
