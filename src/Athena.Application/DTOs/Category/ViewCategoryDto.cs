@@ -1,5 +1,5 @@
 ﻿using Athena.Application.Commons.Mappings;
-using Athena.Shared.DTOs.Category;
+using Athena.Shared.ViewModel.Category;
 
 namespace Athena.Application.DTOs.Category;
 

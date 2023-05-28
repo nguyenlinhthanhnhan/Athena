@@ -1,4 +1,4 @@
-﻿namespace Athena.Shared.DTOs.Category;
+﻿namespace Athena.Shared.ViewModel.Category;
 
 public interface IViewCategoryDto
 {
