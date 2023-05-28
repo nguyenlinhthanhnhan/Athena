@@ -1,4 +1,4 @@
-﻿namespace Athena.Shared.DTO;
+﻿namespace Athena.Shared.DTOs;
 
 public class PageOptionDto
 {
