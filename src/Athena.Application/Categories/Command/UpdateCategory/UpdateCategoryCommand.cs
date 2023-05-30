@@ -2,10 +2,12 @@
 using Athena.Core.Entities;
 using MediatR;
 
-namespace Athena.Application.Categories.Command.CreateCategory;
+namespace Athena.Application.Categories.Command.UpdateCategory;
 
-public class CreateCategoryCommand : IRequest<int>, IMapTo<Category>
+public class UpdateCategoryCommand : IRequest<Unit>, IMapTo<Category>
 {
+    public int Id { get; set; }
+
     public string? Title { get; set; }
 
     public string? MetaTitle { get; set; }

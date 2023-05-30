@@ -10,12 +10,15 @@ public class MappingProfile : Profile
     private void ApplyMappingsFromAssembly(Assembly assembly)
     {
         var types = assembly.GetExportedTypes().Where(x =>
-            x.GetInterfaces().Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(IMapFrom<>))).ToList();
+            x.GetInterfaces().Any(y =>
+                y.IsGenericType && (y.GetGenericTypeDefinition() == typeof(IMapFrom<>) ||
+                                    y.GetGenericTypeDefinition() == typeof(IMapTo<>)))).ToList();
 
         foreach (var type in types)
         {
             var instance = Activator.CreateInstance(type);
-            var methodInfo = type.GetMethod("Mapping") ?? type.GetInterface("IMapFrom`1")?.GetMethod("Mapping");
+            var methodInfo = (type.GetMethod("Mapping") ?? type.GetInterface("IMapFrom`1")?.GetMethod("Mapping")) ??
+                             (type.GetMethod("Mapping") ?? type.GetInterface("IMapTo`1")?.GetMethod("Mapping"));
             methodInfo?.Invoke(instance, new object[] { this });
         }
     }

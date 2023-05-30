@@ -1,11 +1,13 @@
 ﻿using Athena.Application.Commons.Mappings;
 using Athena.Core.Entities;
-using MediatR;
+using Athena.Shared.ViewModel.Category;
 
-namespace Athena.Application.Categories.Command.CreateCategory;
+namespace Athena.Application.Categories.Queries.GetCategory;
 
-public class CreateCategoryCommand : IRequest<int>, IMapTo<Category>
+public class CategoryVm : IViewCategoryDto, IMapFrom<Category>
 {
+    public int Id { get; set; }
+
     public string? Title { get; set; }
 
     public string? MetaTitle { get; set; }

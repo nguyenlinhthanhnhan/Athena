@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Reflection;
+using Athena.Core.Common.Interfaces;
 using Athena.Core.Entities;
 using Athena.Shared.Common;
 using Microsoft.EntityFrameworkCore;
@@ -78,6 +79,34 @@ public class AthenaDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
     
+    public override int SaveChanges()
+    {
+        var modifiedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Modified).Select(x => x.Entity);
+        foreach (var modifiedEntry in modifiedEntries)
+        {
+            if (modifiedEntry is IHasModificationTime entityHasModificationTime)
+            {
+                entityHasModificationTime.LastModificationTime = DateTime.UtcNow;
+            }
+        }
+
+        return base.SaveChanges();
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var modifiedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Modified).Select(x => x.Entity);
+        foreach (var modifiedEntry in modifiedEntries)
+        {
+            if (modifiedEntry is IHasModificationTime entityHasModificationTime)
+            {
+                entityHasModificationTime.LastModificationTime = DateTime.UtcNow;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
     // Entities
     public DbSet<Category> Categories { get; set; }
     public DbSet<Post> Posts { get; set; }
