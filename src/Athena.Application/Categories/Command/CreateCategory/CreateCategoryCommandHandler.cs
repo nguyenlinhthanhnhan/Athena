@@ -18,14 +18,6 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 
     public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        // var newCategory = new Category()
-        // {
-        //     Title = request.Title,
-        //     MetaTitle = request.MetaTitle,
-        //     Slug = request.Slug,
-        //     Content = request.Content
-        // };
-
         var newCategory = _mapper.Map<Category>(request);
 
         _context.Categories.Add(newCategory);
