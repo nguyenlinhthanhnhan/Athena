@@ -23,7 +23,7 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
         {
             Title = "Athena API",
             Version = description.ApiVersion.ToString(),
-            Description = "Project Athena, La"
+            Description = "Project Athena"
         };
 
         if (description.IsDeprecated)

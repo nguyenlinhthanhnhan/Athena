@@ -3,6 +3,7 @@ using Athena.Application.Categories.Command.DeleteCategory;
 using Athena.Application.Categories.Command.UpdateCategory;
 using Athena.Application.Categories.Queries.GetCategories;
 using Athena.Application.Categories.Queries.GetCategory;
+using Athena.Shared.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,9 +27,9 @@ public class CategoriesController : ApiController
     }
 
     [HttpPost]
-    public async Task<ActionResult<int>> Create(CreateCategoryCommand command)
+    public async Task<ActionResult> Create(CreateCategoryCommand command)
     {
-        return await Mediator.Send(command);
+        return Ok(ApiResult<int>.Success(await Mediator.Send(command)));
     }
 
     [HttpDelete("{id:int}")]

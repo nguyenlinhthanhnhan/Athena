@@ -1,6 +1,7 @@
 ﻿using Athena.Application.Commons.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Serilog;
 
 namespace Athena.API.Filters;
 
@@ -26,14 +27,18 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     private void HandleException(ExceptionContext context)
     {
         var type = context.Exception.GetType();
-        if (_exceptionHandlers.TryGetValue(type, out Action<ExceptionContext> value))
+        if (_exceptionHandlers.TryGetValue(type, out var handler))
         {
-            value.Invoke(context);
+            handler.Invoke(context);
+            return;
         }
+
+        HandleUnknownException(context);
     }
 
     private void HandleUnknownException(ExceptionContext context)
     {
+        Log.Error("{ContextExceptionMessage} {ContextExceptionStackTrace}", context.Exception.Message, context.Exception.StackTrace);
         var details = new ProblemDetails()
         {
             Status = StatusCodes.Status500InternalServerError,
