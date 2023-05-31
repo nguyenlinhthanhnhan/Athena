@@ -2,21 +2,17 @@
 using Athena.Core.Entities;
 using Athena.DataAccess.Extensions;
 using Athena.DataAccess.Persistence;
-using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Athena.Application.Categories.Command.UpdateCategory;
 
 public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Unit>
 {
     private readonly AthenaDbContext _context;
-    private readonly IMapper _mapper;
 
-    public UpdateCategoryCommandHandler(AthenaDbContext context, IMapper mapper)
+    public UpdateCategoryCommandHandler(AthenaDbContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
     public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
