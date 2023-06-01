@@ -15,6 +15,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         {
             { typeof(CustomValidationException), HandleValidationException },
             { typeof(NotFoundException), HandleNotFoundException },
+            { typeof(BadRequestException), HandleBadRequestException }
         };
     }
 
@@ -36,14 +37,15 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         HandleUnknownException(context);
     }
 
-    private void HandleUnknownException(ExceptionContext context)
+    private static void HandleUnknownException(ExceptionContext context)
     {
-        Log.Error("{ContextExceptionMessage} {ContextExceptionStackTrace}", context.Exception.Message, context.Exception.StackTrace);
+        Log.Error("{ContextExceptionMessage} {ContextExceptionStackTrace}", context.Exception.Message,
+            context.Exception.StackTrace);
         var details = new ProblemDetails()
         {
             Status = StatusCodes.Status500InternalServerError,
             Title = "An error occurred while processing your request.",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
         };
 
         context.Result = new ObjectResult(details)
@@ -54,7 +56,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
 
-    private void HandleValidationException(ExceptionContext context)
+    private static void HandleValidationException(ExceptionContext context)
     {
         var exception = context.Exception as CustomValidationException;
 
@@ -68,7 +70,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
 
-    private void HandleNotFoundException(ExceptionContext context)
+    private static void HandleNotFoundException(ExceptionContext context)
     {
         var exception = context.Exception as NotFoundException;
 
@@ -80,6 +82,22 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         };
 
         context.Result = new NotFoundObjectResult(details);
+
+        context.ExceptionHandled = true;
+    }
+
+    private static void HandleBadRequestException(ExceptionContext context)
+    {
+        var exception = context.Exception as BadRequestException;
+
+        var details = new ProblemDetails()
+        {
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Title = "Bad Request",
+            Detail = exception.Message
+        };
+
+        context.Result = new BadRequestObjectResult(details);
 
         context.ExceptionHandled = true;
     }

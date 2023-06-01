@@ -18,7 +18,7 @@ public class CategoriesController : ApiController
         var vm = await Mediator.Send(new GetCategoriesQuery());
         return vm.Lists.Count == 0 ? NotFound() : Ok(vm);
     }
-    
+
     [HttpGet("{id:int}")]
     public async Task<ActionResult<CategoryVm>> GetCategory(int id)
     {
@@ -33,9 +33,10 @@ public class CategoriesController : ApiController
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<Unit>> DeleteCategory(int id)
+    public async Task<ActionResult> DeleteCategory(int id)
     {
-        return await Mediator.Send(new DeleteCategoryCommand { Id = id });
+        await Mediator.Send(new DeleteCategoryCommand { Id = id });
+        return NoContent();
     }
 
     [HttpPut("{id:int}")]
