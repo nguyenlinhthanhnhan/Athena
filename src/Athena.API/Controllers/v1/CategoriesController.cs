@@ -13,33 +13,33 @@ namespace Athena.API.Controllers.v1;
 public class CategoriesController : ApiController
 {
     [HttpGet]
-    public async Task<ActionResult<CategoriesVm>> Get()
+    public async Task<ActionResult<CategoriesVm>> GetCategories()
     {
         var vm = await Mediator.Send(new GetCategoriesQuery());
         return vm.Lists.Count == 0 ? NotFound() : Ok(vm);
     }
     
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<CategoryVm>> Get(int id)
+    public async Task<ActionResult<CategoryVm>> GetCategory(int id)
     {
         var vm = await Mediator.Send(new GetCategoryQuery { Id = id });
         return vm == null ? NotFound() : Ok(vm);
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create(CreateCategoryCommand command)
+    public async Task<ActionResult> CreateCategory(CreateCategoryCommand command)
     {
         return Ok(ApiResult<int>.Success(await Mediator.Send(command)));
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<Unit>> Delete(int id)
+    public async Task<ActionResult<Unit>> DeleteCategory(int id)
     {
         return await Mediator.Send(new DeleteCategoryCommand { Id = id });
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<Unit>> Update(int id, UpdateCategoryCommand command)
+    public async Task<ActionResult<Unit>> UpdateCategory(int id, UpdateCategoryCommand command)
     {
         if (id != command.Id)
         {
