@@ -1,9 +1,9 @@
-﻿namespace Athena.Shared.ViewModel.Category;
+﻿namespace Athena.Shared.CommandModels.Category;
 
-public interface IViewCategoryDto
+public interface IUpdateCategoryCommand
 {
     int Id { get; set; }
-    
+
     string? Title { get; set; }
 
     string? MetaTitle { get; set; }

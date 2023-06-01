@@ -1,10 +1,11 @@
 ﻿using Athena.Application.Commons.Mappings;
 using Athena.Core.Entities;
+using Athena.Shared.CommandModels.Post;
 using MediatR;
 
 namespace Athena.Application.Posts.Command.CreatePost;
 
-public class CreatePostCommand : IRequest<long>, IMapTo<Post>
+public class CreatePostCommand : ICreatePostCommand, IRequest<long>, IMapTo<Post>
 {
     public string? Title { get; set; }
 

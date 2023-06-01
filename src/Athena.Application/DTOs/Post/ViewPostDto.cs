@@ -1,5 +1,5 @@
 ﻿using Athena.Application.Commons.Mappings;
-using Athena.Shared.ViewModel.Post;
+using Athena.Shared.ViewModels.Post;
 
 namespace Athena.Application.DTOs.Post;
 

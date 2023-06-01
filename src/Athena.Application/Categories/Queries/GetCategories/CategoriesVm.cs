@@ -1,5 +1,5 @@
 ﻿using Athena.Application.DTOs.Category;
-using Athena.Shared.ViewModel.Category;
+using Athena.Shared.ViewModels.Category;
 
 namespace Athena.Application.Categories.Queries.GetCategories;
 

@@ -1,6 +1,5 @@
 ﻿using Athena.Application.DTOs.Post;
-using Athena.Shared.ViewModel.Category;
-using Athena.Shared.ViewModel.Post;
+using Athena.Shared.ViewModels.Post;
 
 namespace Athena.Application.Posts.Queries.GetPosts;
 

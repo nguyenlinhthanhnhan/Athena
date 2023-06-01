@@ -1,6 +1,6 @@
-﻿namespace Athena.Shared.ViewModel.Post;
+﻿namespace Athena.Shared.CommandModels.Post;
 
-public interface IViewPostDto
+public interface IUpdatePostCommand
 {
     long Id { get; set; }
 
@@ -17,4 +17,6 @@ public interface IViewPostDto
     string? ImageUrl { get; set; }
 
     string? ImageAlt { get; set; }
+
+    bool IsPublished { get; set; }
 }

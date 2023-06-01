@@ -1,4 +1,4 @@
-﻿namespace Athena.Shared.ViewModel.Post;
+﻿namespace Athena.Shared.ViewModels.Post;
 
 public interface IPostsVm<T> where T: IViewPostDto
 {

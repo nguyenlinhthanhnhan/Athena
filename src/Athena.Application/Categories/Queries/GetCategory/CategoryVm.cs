@@ -1,6 +1,6 @@
 ﻿using Athena.Application.Commons.Mappings;
 using Athena.Core.Entities;
-using Athena.Shared.ViewModel.Category;
+using Athena.Shared.ViewModels.Category;
 
 namespace Athena.Application.Categories.Queries.GetCategory;
 

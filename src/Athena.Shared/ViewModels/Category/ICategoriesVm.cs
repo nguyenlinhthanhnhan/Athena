@@ -1,4 +1,4 @@
-﻿namespace Athena.Shared.ViewModel.Category;
+﻿namespace Athena.Shared.ViewModels.Category;
 
 public interface ICategoriesVm<T> where T : IViewCategoryDto
 {

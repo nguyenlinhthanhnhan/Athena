@@ -1,10 +1,11 @@
 ﻿using Athena.Application.Commons.Mappings;
 using Athena.Core.Entities;
+using Athena.Shared.CommandModels.Post;
 using MediatR;
 
 namespace Athena.Application.Posts.Command.UpdatePost;
 
-public class UpdatePostCommand : IRequest<Unit>, IMapTo<Post>
+public class UpdatePostCommand : IUpdatePostCommand, IRequest<Unit>, IMapTo<Post>
 {
     public long Id { get; set; }
 
