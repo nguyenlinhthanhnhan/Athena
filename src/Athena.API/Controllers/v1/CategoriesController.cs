@@ -29,7 +29,7 @@ public class CategoriesController : ApiController
     [HttpPost]
     public async Task<ActionResult> CreateCategory(CreateCategoryCommand command)
     {
-        return Ok(ApiResult<int>.Success(await Mediator.Send(command)));
+        return Ok(await Mediator.Send(command));
     }
 
     [HttpDelete("{id:int}")]
