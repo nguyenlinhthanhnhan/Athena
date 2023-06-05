@@ -13,10 +13,10 @@ namespace Athena.API.Controllers.v1;
 public class CategoriesController : ApiController
 {
     [HttpGet]
-    public async Task<ActionResult<CategoriesVm>> GetCategories()
+    public async Task<ActionResult<CategoriesVm>> GetCategories([FromQuery]GetCategoriesQuery query)
     {
-        var vm = await Mediator.Send(new GetCategoriesQuery());
-        return vm.Lists.Count == 0 ? NotFound() : Ok(vm);
+        var vm = await Mediator.Send(query);
+        return Ok(vm);
     }
 
     [HttpGet("{id:int}")]

@@ -1,6 +1,8 @@
 ﻿using Athena.Application.DTOs.Category;
 using Athena.Core.Exceptions;
 using Athena.DataAccess.Persistence;
+using Athena.Shared.DTOs;
+using Athena.Shared.Linq.Extensions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -22,13 +24,27 @@ public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, Cat
 
     public async Task<CategoriesVm?> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
     {
+        var categories = _context.Categories.WhereIf(!string.IsNullOrWhiteSpace(request.Title),
+                x => x.Title!.Contains(request.Title!)).ProjectTo<ViewCategoryDto>(_mapper.ConfigurationProvider)
+            .AsNoTracking();
+
+        var totalItems = await categories.CountAsync(cancellationToken);
+        var pagedCategories = await categories
+            .Skip(request.Skip)
+            .Take(request.Limit)
+            .ToListAsync(cancellationToken);
+
         var vm = new CategoriesVm
         {
-            Lists = await _context.Categories
-                .ProjectTo<ViewCategoryDto>(_mapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken)
+            Items = pagedCategories,
+            Meta = new PageMetaDto
+            {
+                TotalItems = totalItems,
+                Limit = request.Limit,
+                Page = request.Page
+            }
         };
-        
+
         var serializedCategories = JsonConvert.SerializeObject(vm);
         vm = JsonConvert.DeserializeObject<CategoriesVm>(serializedCategories);
 
