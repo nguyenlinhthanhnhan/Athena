@@ -1,4 +1,4 @@
-﻿using Athena.Shared.CommandModels.Post;
+﻿using Athena.Shared.CQRS.CommandModels.Post;
 using MediatR;
 
 namespace Athena.Application.Posts.Command.DeletePost;

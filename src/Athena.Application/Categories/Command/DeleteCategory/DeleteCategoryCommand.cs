@@ -1,4 +1,4 @@
-﻿using Athena.Shared.CommandModels.Category;
+﻿using Athena.Shared.CQRS.CommandModels.Category;
 using MediatR;
 
 namespace Athena.Application.Categories.Command.DeleteCategory;

@@ -2,7 +2,9 @@ using System.Reflection;
 using Athena.API.Extensions;
 using Athena.API.Filters;
 using Athena.API.Helpers;
+using Athena.API.Middlewares;
 using Athena.Application;
+using Athena.Application.Identity;
 using Athena.DataAccess;
 using Athena.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +38,8 @@ builder.Services.AddVersionedApiExplorerExtension();
 builder.Services.AddSwaggerGenExtension();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
+builder.Services.AddJwt(configuration);
+
 builder.Services.AddCors(
     options => options.AddPolicy(
         defaultCorsPolicyName,
@@ -66,6 +70,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(defaultCorsPolicyName);
 
+app.UseMiddleware<JwtMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();

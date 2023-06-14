@@ -1,7 +1,9 @@
-﻿namespace Athena.Shared.CommandModels.Category;
+﻿namespace Athena.Shared.CQRS.CommandModels.Category;
 
-public interface ICreateCategoryCommand
+public interface IUpdateCategoryCommand
 {
+    int Id { get; set; }
+
     string? Title { get; set; }
 
     string? MetaTitle { get; set; }

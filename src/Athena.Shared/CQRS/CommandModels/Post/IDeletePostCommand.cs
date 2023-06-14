@@ -1,4 +1,4 @@
-﻿namespace Athena.Shared.CommandModels.Post;
+﻿namespace Athena.Shared.CQRS.CommandModels.Post;
 
 public interface IDeletePostCommand
 {

@@ -1,6 +1,6 @@
 ﻿using Athena.Application.Commons.Mappings;
 using Athena.Core.Entities;
-using Athena.Shared.CommandModels.Post;
+using Athena.Shared.CQRS.CommandModels.Post;
 using MediatR;
 
 namespace Athena.Application.Posts.Command.CreatePost;

@@ -5,6 +5,7 @@ using Athena.Application.Categories.Queries.GetCategories;
 using Athena.Application.Categories.Queries.GetCategory;
 using Athena.Shared.DTOs;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Athena.API.Controllers.v1;
@@ -26,6 +27,7 @@ public class CategoriesController : ApiController
         return vm == null ? NotFound() : Ok(vm);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult> CreateCategory(CreateCategoryCommand command)
     {

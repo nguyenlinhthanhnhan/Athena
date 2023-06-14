@@ -1,4 +1,4 @@
-﻿namespace Athena.Shared.CommandModels.Category;
+﻿namespace Athena.Shared.CQRS.CommandModels.Category;
 
 public interface IDeleteCategoryCommand
 {

@@ -78,7 +78,7 @@ public class AthenaDbContext : DbContext
 
         base.OnModelCreating(modelBuilder);
     }
-    
+
     public override int SaveChanges()
     {
         var modifiedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Modified).Select(x => x.Entity);
@@ -114,4 +114,5 @@ public class AthenaDbContext : DbContext
     public DbSet<PostCategory> PostCategories { get; set; }
     public DbSet<PostTag> PostTags { get; set; }
     public DbSet<PostMeta> PostMetas { get; set; }
+    public DbSet<User> Users { get; set; }
 }

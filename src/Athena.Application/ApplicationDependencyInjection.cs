@@ -1,9 +1,12 @@
 ﻿using System.Reflection;
 using Athena.Application.Commons.Behaviors;
+using Athena.Application.Identity;
+using Athena.Application.Identity.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Athena.Application;
 
@@ -18,6 +21,9 @@ public static class ApplicationDependencyInjection
         {
             configs.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
         });
+        serviceCollection.Configure<AuthSettings>(configuration.GetSection(nameof(AuthSettings)));
+        
+        serviceCollection.AddScoped<IUserService, UserService>();
 
         serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
         serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

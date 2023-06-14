@@ -1,6 +1,6 @@
 ﻿using Athena.Application.Commons.Mappings;
 using Athena.Core.Entities;
-using Athena.Shared.CommandModels.Category;
+using Athena.Shared.CQRS.CommandModels.Category;
 using MediatR;
 
 namespace Athena.Application.Categories.Command.UpdateCategory;
