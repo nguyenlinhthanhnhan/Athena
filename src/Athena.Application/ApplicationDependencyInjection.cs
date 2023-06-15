@@ -24,6 +24,7 @@ public static class ApplicationDependencyInjection
         serviceCollection.Configure<AuthSettings>(configuration.GetSection(nameof(AuthSettings)));
         
         serviceCollection.AddScoped<IUserService, UserService>();
+        serviceCollection.AddScoped<ICustomAuthenticationService, CustomAuthenticationService>();
 
         serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
         serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

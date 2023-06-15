@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Athena.Application.DTOs.User;
+namespace Athena.Application.DTOs.Authentication;
 
 public class AuthenticateRequest
 {

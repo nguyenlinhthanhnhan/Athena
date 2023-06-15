@@ -1,10 +1,13 @@
-﻿using System.Reflection;
+﻿using System.Net;
+using System.Reflection;
 using System.Text;
 using Athena.API.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Athena.API.Extensions;
 
@@ -80,6 +83,41 @@ public static class ServiceExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false
+                };
+                x.Events = new JwtBearerEvents
+                {
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse();
+
+                        context.Response.ContentType = "application/json";
+                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new
+                        {
+                            Type = "https://tools.ietf.org/html/rfc7235#section-3.1",
+                            Status = context.Response.StatusCode,
+                            Title = "You are not authorized"
+                        }, new JsonSerializerSettings
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        }));
+                    },
+                    OnForbidden = async context =>
+                    {
+                        context.Response.ContentType = "application/json";
+                        context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new
+                        {
+                            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
+                            Status = context.Response.StatusCode,
+                            Title = "Forbidden"
+                        }, new JsonSerializerSettings
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        }));
+                    }
                 };
             });
     }

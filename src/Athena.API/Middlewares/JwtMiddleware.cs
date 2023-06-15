@@ -48,8 +48,9 @@ public class JwtMiddleware
 
             context.Items["User"] = userService.GetById(userId);
         }
-        catch
+        catch (Exception)
         {
+            
         }
     }
 }
