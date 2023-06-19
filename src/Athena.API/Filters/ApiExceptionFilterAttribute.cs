@@ -15,7 +15,8 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         {
             { typeof(CustomValidationException), HandleValidationException },
             { typeof(NotFoundException), HandleNotFoundException },
-            { typeof(BadRequestException), HandleBadRequestException }
+            { typeof(BadRequestException), HandleBadRequestException },
+            { typeof(UnauthorizedException), HandleUnauthorizedException }
         };
     }
 
@@ -98,6 +99,22 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         };
 
         context.Result = new BadRequestObjectResult(details);
+
+        context.ExceptionHandled = true;
+    }
+    
+    private static void HandleUnauthorizedException(ExceptionContext context)
+    {
+        var exception = context.Exception as UnauthorizedException;
+
+        var details = new ProblemDetails()
+        {
+            Type = "https://tools.ietf.org/html/rfc7235#section-3.1",
+            Title = "You are not authorized",
+            Detail = exception.Message
+        };
+
+        context.Result = new UnauthorizedObjectResult(details);
 
         context.ExceptionHandled = true;
     }

@@ -1,7 +1,11 @@
-﻿namespace Athena.Application.DTOs.Authentication;
+﻿using Athena.Shared.DTOs.Authentication;
 
-public class AuthenticateResponse
+namespace Athena.Application.DTOs.Authentication;
+
+public class AuthenticateResponse : IAuthenticateResponse
 {
+    public bool IsAuthenticated => !string.IsNullOrEmpty(AccessToken);
+
     public string AccessToken { get; set; }
 
     public string RefreshToken { get; set; }

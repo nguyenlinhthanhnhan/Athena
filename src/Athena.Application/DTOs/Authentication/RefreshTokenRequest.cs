@@ -1,6 +1,8 @@
-﻿namespace Athena.Application.DTOs.Authentication;
+﻿using Athena.Shared.DTOs.Authentication;
 
-public class RefreshTokenRequest
+namespace Athena.Application.DTOs.Authentication;
+
+public class RefreshTokenRequest : IRefreshTokenRequest
 {
     public string AccessToken { get; set; } = null!;
 }

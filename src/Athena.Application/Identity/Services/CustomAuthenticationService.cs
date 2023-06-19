@@ -8,6 +8,7 @@ using Athena.Core.Entities;
 using Athena.DataAccess.Persistence;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -34,7 +35,7 @@ public class CustomAuthenticationService : ICustomAuthenticationService
 
         if (user == null)
         {
-            throw new BadRequestException("Email or password is incorrect");
+            throw new UnauthorizedException("Email or password is incorrect");
         }
 
         // Check password
@@ -43,7 +44,7 @@ public class CustomAuthenticationService : ICustomAuthenticationService
 
         if (result == PasswordVerificationResult.Failed)
         {
-            throw new BadRequestException("Email or password is incorrect");
+            throw new UnauthorizedException("Email or password is incorrect");
         }
 
         var token = GenerateJwtToken(user);

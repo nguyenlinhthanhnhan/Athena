@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Athena.Shared.DTOs.Authentication;
 
 namespace Athena.Application.DTOs.Authentication;
 
-public class AuthenticateRequest
+public class AuthenticateRequest : IAuthenticateRequest
 {
     [Required]
     public string Email { get; set; }
