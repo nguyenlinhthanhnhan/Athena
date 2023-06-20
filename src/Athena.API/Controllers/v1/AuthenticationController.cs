@@ -28,15 +28,14 @@ public class AuthenticationController : ControllerBase
     /// <summary>
     /// Get new access token
     /// </summary>
-    /// <param name="refreshToken"></param>
-    /// <param name="model"></param>
+
+    /// <param name="request"></param>
     /// <returns></returns>
-    [Authorize]
-    [HttpGet("refresh")]
-    public IActionResult RefreshToken([FromQuery] string refreshToken)
+    [AllowAnonymous]
+    [HttpPost("refresh")]
+    public IActionResult RefreshToken([FromBody] RefreshTokenRequest request)
     {
-        var userId = HttpContext.GetCurrentUser();
-        var result = _customAuthenticationService.RefreshToken(userId, refreshToken);
+        var result = _customAuthenticationService.RefreshToken(request);
         return Ok(result);
     }
 

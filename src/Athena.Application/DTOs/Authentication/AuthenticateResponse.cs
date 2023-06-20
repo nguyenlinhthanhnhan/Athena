@@ -6,9 +6,14 @@ public class AuthenticateResponse : IAuthenticateResponse
 {
     public bool IsAuthenticated => !string.IsNullOrEmpty(AccessToken);
 
-    public string AccessToken { get; set; }
+    public string? AccessToken { get; set; }
 
-    public string RefreshToken { get; set; }
+    public string? RefreshToken { get; set; }
+    
+    public AuthenticateResponse()
+    {
+        AccessToken = null;
+    }
 
     public AuthenticateResponse(string accessToken, string refreshToken)
     {

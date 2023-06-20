@@ -74,21 +74,27 @@ public class CustomAuthenticationService : ICustomAuthenticationService
     }
 
     // Refresh Token
-    public AuthenticateResponse RefreshToken(int userId, string token)
+    public AuthenticateResponse RefreshToken(RefreshTokenRequest? request)
     {
+        if (request is null)
+            return new AuthenticateResponse();
+
+        var principal = GetPrincipalFromExpiredToken(request.AccessToken);
+        var userId = int.Parse(principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+
         var user = _context.Users.SingleOrDefault(u => u.Id == userId);
 
         // If user is null or refresh token is not equal to token or refresh token is null
-        if (user == null || user.RefreshToken != token || user.RefreshToken == null)
+        if (user == null || user.RefreshToken != request.RefreshToken || user.RefreshToken == null)
             throw new BadRequestException("Invalid token");
+
+        var newAccessToken = GenerateJwtToken(user);
 
         var newRefreshToken = GenerateRefreshToken();
 
         user.RefreshToken = newRefreshToken;
         _context.Entry(user).State = EntityState.Modified;
         _context.SaveChanges();
-
-        var newAccessToken = GenerateJwtToken(user);
 
         return new AuthenticateResponse(newAccessToken, newRefreshToken);
     }
@@ -171,5 +177,32 @@ public class CustomAuthenticationService : ICustomAuthenticationService
             "7d" => 604800,
             _ => 604800
         };
+    }
+
+    /// <summary>
+    /// Get principal from expired token
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    /// <exception cref="SecurityTokenException"></exception>
+    private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+    {
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_authSettings.AccessTokenSecret)),
+            ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+        if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+            !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+                StringComparison.InvariantCultureIgnoreCase))
+            throw new SecurityTokenException("Invalid token");
+
+        return principal;
     }
 }

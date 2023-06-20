@@ -2,7 +2,7 @@
 
 public interface IAuthenticateResponse
 {
-    string AccessToken { get; set; }
+    string? AccessToken { get; set; }
 
-    string RefreshToken { get; set; }
+    string? RefreshToken { get; set; }
 }

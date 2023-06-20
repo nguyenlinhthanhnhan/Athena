@@ -7,7 +7,7 @@ public interface ICustomAuthenticationService
 {
     AuthenticateResponse Authenticate(AuthenticateRequest model);
 
-    AuthenticateResponse RefreshToken(int userId, string token);
+    AuthenticateResponse RefreshToken(RefreshTokenRequest request);
     
     void RevokeToken(int userId);
 }
