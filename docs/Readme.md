@@ -1,3 +1,5 @@
+# Couple project use to learn to improve .NET skill, along with https://github.com/nguyenlinhthanhnhan/Athena.Blog
+
 ## Migration
 
 #### Before running the command, move to /src folder
